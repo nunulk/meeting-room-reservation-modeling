@@ -1,0 +1,19 @@
+{
+    "name": "shoheikai/meeting-room-reservation-modeling",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "^8.5"
+    },
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "MeetingRoomReservationModeling\\": "src/domain/",
+            "App\\": "src/app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MeetingRoomReservationModeling\\Test\\": "test/domain/"
+        }
+    }
+}
