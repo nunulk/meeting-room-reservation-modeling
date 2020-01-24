@@ -20,6 +20,6 @@ class TimeRange
 
     public function overlapped(TimeRange $range): bool
     {
-        return $range->start >= $this->start && $range->end <= $this->end;
+        return !(($range->start < $this->start && $range->end <= $this->start) || ($range->start >= $this->end && $range->end > $this->end));
     }
 }

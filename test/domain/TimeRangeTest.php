@@ -24,9 +24,24 @@ class TimeRangeTest extends TestCase
     public function dataOverlapped()
     {
         return [
-            'overlapped' => [
+            'overlapped,start after, end before' => [
                 'range1' => new TimeRange(new Time('12:00'), new Time('15:00')),
                 'range2' => new TimeRange(new Time('14:00'), new Time('15:00')),
+                'expected' => true,
+            ],
+            'overlapped,start before, end before' => [
+                'range1' => new TimeRange(new Time('12:00'), new Time('15:00')),
+                'range2' => new TimeRange(new Time('11:00'), new Time('12:30')),
+                'expected' => true,
+            ],
+            'overlapped,start after,end after' => [
+                'range1' => new TimeRange(new Time('12:00'), new Time('15:00')),
+                'range2' => new TimeRange(new Time('14:00'), new Time('15:30')),
+                'expected' => true,
+            ],
+            'overlapped,start before, end after' => [
+                'range1' => new TimeRange(new Time('12:00'), new Time('15:00')),
+                'range2' => new TimeRange(new Time('11:00'), new Time('15:30')),
                 'expected' => true,
             ],
             'not overlapped' => [
