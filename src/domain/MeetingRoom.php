@@ -15,30 +15,31 @@ class MeetingRoom
 
     public function reserve(TimeRange $range)
     {
-        self::addReservation($this, $range);
+        $reservation = new Reservation($this, $range);
+        return $reservation;
     }
 
-    public static function addReservation(self $room, TimeRange $range)
+    public static function addReservation(Reservation $reservation)
     {
-        if (self::existsOverlappedReservation($room, $range)) {
+        if (self::existsOverlappedReservation($reservation)) {
             throw new \RuntimeException();
         }
 
-        $key = $room->name;
+        $key = $reservation->room->name;
         if (!isset(self::$reservations[$key])) {
             self::$reservations[$key] = [];
         }
-        self::$reservations[$key][] = ['room' => $room, 'range' => $range];
+        self::$reservations[$key][] = $reservation;
     }
 
-    public static function existsOverlappedReservation(MeetingRoom $room, TimeRange $range): bool
+    public static function existsOverlappedReservation(Reservation $reservation): bool
     {
-        if (!isset(self::$reservations[$room->name])) {
+        if (!isset(self::$reservations[$reservation->room->name])) {
             return false;
         }
-        foreach (self::$reservations[$room->name] as $reservation) {
-            /** @var TimeRange $reservation['range'] */
-            if ($reservation['range']->overlapped($range)) {
+        foreach (self::$reservations[$reservation->room->name] as $aReservation) {
+            /** @var Reservation $aReservation */
+            if ($aReservation->range->overlapped($reservation->range)) {
                 return true;
             }
         }
