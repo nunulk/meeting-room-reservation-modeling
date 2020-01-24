@@ -2,6 +2,7 @@
 
 namespace MeetingRoomReservationModeling\Test;
 
+use MeetingRoomReservationModeling\ReservationRepository;
 use PHPUnit\Framework\TestCase;
 use MeetingRoomReservationModeling\MeetingRoom;
 use MeetingRoomReservationModeling\Time;
@@ -13,8 +14,11 @@ class MeetingRoomTest extends TestCase
     {
         $timeRange = new TimeRange(new Time('12:00'), new Time('15:00'));
 
+        $repository = new ReservationRepository();
         $meetingRoom = new MeetingRoom('test');
-        $meetingRoom->reserve($timeRange);
+        $reservation = $meetingRoom->reserve($timeRange);
+        $repository->addReservation($reservation);
+
         $this->assertTrue(true);
     }
 
@@ -22,14 +26,18 @@ class MeetingRoomTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        $timeRange = new TimeRange(new Time('12:00'), new Time('15:00'));
+        $repository = new ReservationRepository();
 
         $meetingRoom = new MeetingRoom('test');
-        $meetingRoom->reserve($timeRange);
 
-        $timeRange = new TimeRange(new Time('14:00'), new Time('15:00'));
+        $timeRange1 = new TimeRange(new Time('12:00'), new Time('15:00'));
 
-        $meetingRoom = new MeetingRoom('test2');
-        $meetingRoom->reserve($timeRange);
+        $reservation1 = $meetingRoom->reserve($timeRange1);
+        $repository->addReservation($reservation1);
+
+        $timeRange2 = new TimeRange(new Time('14:00'), new Time('15:00'));
+
+        $reservation2 = $meetingRoom->reserve($timeRange2);
+        $repository->addReservation($reservation2);
     }
 }
